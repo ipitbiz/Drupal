@@ -1,0 +1,54 @@
+<?php
+
+ /**
+ * @file
+ * Change search url on Parques españoles
+ *
+ * @section LICENSE
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @details    Change search url on Parques españoles
+ * @category   PARQUES_REUNIDOS
+ * @version    $Id: search_url_seo.module 0 2013-07-30
+ * @author     Pedro Iturriaga <pedro.iturriaga@ipit.biz>
+ * @file       /sites/all/modules/custom/search_url_seo/search_url_seo.module
+ * @copyright  GNU Public License
+ * @link       http://www.gnu.org/licenses/gpl.html
+ */
+
+	function search_url_seo_url_inbound_alter(&$result, $path, $path_language) {
+		// Si la url es /?q=
+		//$destination = request_uri();
+    //if (preg_match('|q=(.*)|', $destination, $matches)) {
+
+		// Si la url es /q=
+    if (preg_match('|^q=(.*)|', $path, $matches)) {
+			//if ($matches[1] == $path) {
+			  $result = 'search/node/' . $matches[1];
+			//}
+    }
+	}
+ 
+  function search_url_seo_url_outbound_alter(&$path, &$options, $original_path) {
+		if (preg_match('|^search/node/(.*)|', $path, $matches)) {
+
+			// Cambiamos la url del buscador a /q=
+			$path = 'q=' . $matches[1];
+
+			// Cambiamos la url a /?q=
+			//$path = '';
+			//$options['query'] = array('q' => $matches[1]);
+    }
+  }
