@@ -1,0 +1,66 @@
+<?php
+
+ /**
+ * @file
+ * Showing metatags in nodes on Parques españoles
+ *
+ * @section LICENSE
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @details    Showing metatags in nodes
+ * @category   PARQUES_REUNIDOS
+ * @version    $Id: breadcrumbs_seo.module 0 2013-06-25
+ * @author     Pedro Iturriaga <pedro.iturriaga@ipit.biz>
+ * @file       /sites/all/modules/custom/breadcrumbs_seo/breadcrumbs_seo.module
+ * @copyright  GNU Public License
+ * @link       http://www.gnu.org/licenses/gpl.html
+ */
+
+/**
+ * Implements hook_html_head_alter
+ */
+function metatag_seo_html_head_alter(&$head_elements) {
+
+	// Remove shortlink link
+  foreach ($head_elements as $key => $element) {
+    if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'shortlink') {
+      unset($head_elements[$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_page_build().
+ */
+function metatag_seo_page_build(&$vars) {
+
+	// Add metatags title and description
+	if ($node = menu_get_object()) {
+
+		foreach($vars['content']['metatags'] as $key => $element) {
+			if (strstr($key, 'node')) {
+				$vars['content']['metatags'][$key]['title']['#attached']['metatag_set_preprocess_variable'][0][2] = $node->metatags['es-es']['title']['value'];
+			}
+		}
+
+		$element = array(
+			'#type' => 'html_tag',
+			'#tag' => 'meta',
+			'#attributes' => array('name' => 'description', 'content' => ''.$node->metatags['es-es']['description']['value'].''),
+		);
+		drupal_add_html_head($element, 'meta_description');
+	}
+}
+
