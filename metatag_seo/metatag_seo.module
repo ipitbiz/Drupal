@@ -45,22 +45,30 @@ function metatag_seo_html_head_alter(&$head_elements) {
  * Implements hook_page_build().
  */
 function metatag_seo_page_build(&$vars) {
+  global $language;
 
 	// Add metatags title and description
 	if ($node = menu_get_object()) {
 
-		foreach($vars['content']['metatags'] as $key => $element) {
-			if (strstr($key, 'node')) {
-				$vars['content']['metatags'][$key]['title']['#attached']['metatag_set_preprocess_variable'][0][2] = $node->metatags['es-es']['title']['value'];
+		foreach($node->metatags as $key => $value) {
+			if ($language->language == $key ) {
+			  $idioma = $key;
 			}
 		}
 
-		$element = array(
-			'#type' => 'html_tag',
-			'#tag' => 'meta',
-			'#attributes' => array('name' => 'description', 'content' => ''.$node->metatags['es-es']['description']['value'].''),
-		);
-		drupal_add_html_head($element, 'meta_description');
+		foreach($vars['content']['metatags'] as $key => $element) {
+			if (strstr($key, 'node') AND isset($node->metatags[$idioma]['title']['value']) AND $node->metatags[$idioma]['title']['value'] != '') {
+				$vars['content']['metatags'][$key]['title']['#attached']['metatag_set_preprocess_variable'][0][2] = $node->metatags[$idioma]['title']['value'];
+			}
+		}
+
+    if (isset($node->metatags[$idioma]['description']['value']) AND $node->metatags[$idioma]['description']['value'] != '') {
+		  $element = array(
+			  '#type' => 'html_tag',
+			  '#tag' => 'meta',
+			  '#attributes' => array('name' => 'description', 'content' => ''.$node->metatags[$idioma]['description']['value'].''),
+		  );
+		  drupal_add_html_head($element, 'meta_description');
+	  }
 	}
 }
-
