@@ -21,30 +21,18 @@
  *
  * @details    Showing metatags in nodes
  * @category   PARQUES_REUNIDOS
- * @version    $Id: breadcrumbs_seo.module 0 2013-06-25
+ * @version    $Id: metatag_title_seo.module 0 2013-06-25
  * @author     Pedro Iturriaga <pedro.iturriaga@ipit.biz>
- * @file       /sites/all/modules/custom/breadcrumbs_seo/breadcrumbs_seo.module
+ * @file       /sites/all/modules/custom/metatag_title_seo/metatag_title_seo.module
  * @copyright  GNU Public License
  * @link       http://www.gnu.org/licenses/gpl.html
  */
 
-/**
- * Implements hook_html_head_alter
- */
-function metatag_seo_html_head_alter(&$head_elements) {
-
-	// Remove shortlink link
-  foreach ($head_elements as $key => $element) {
-    if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'shortlink') {
-      unset($head_elements[$key]);
-    }
-  }
-}
 
 /**
  * Implements hook_page_build().
  */
-function metatag_seo_page_build(&$vars) {
+function metatag_title_seo_page_build(&$vars) {
   global $language;
 
 	// Add metatags title and description

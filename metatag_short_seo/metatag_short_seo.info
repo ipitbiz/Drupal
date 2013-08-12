@@ -1,0 +1,8 @@
+name = Remove shortlink
+description = Remove shortlink from head
+package = "PARQUES REUNIDOS"
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-07-01
+version = "7.x-1.x"
+core = "7.x"
