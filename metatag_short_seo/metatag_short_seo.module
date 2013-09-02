@@ -34,9 +34,7 @@
 function metatag_short_seo_html_head_alter(&$head_elements) {
 
 	// Remove shortlink link
-  foreach ($head_elements as $key => $element) {
-    if (isset($element['#attributes']['rel']) && $element['#attributes']['rel'] == 'shortlink') {
-      unset($head_elements[$key]);
-    }
-  }
+	if (isset($head_elements['metatag_shortlink'])) {
+    unset($head_elements['metatag_shortlink']);
+	}
 }
